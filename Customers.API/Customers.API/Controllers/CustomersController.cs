@@ -43,5 +43,12 @@ namespace Customers.API.Controllers
             return BadRequest();
         }
 
+        [HttpDelete("{id:int}")]
+        public IActionResult DeleteCustomer(int id)
+        {
+            var tete = id;
+            return Ok();
+        }
+
     }
 }
