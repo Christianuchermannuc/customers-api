@@ -8,9 +8,7 @@ trigger:
 
 pool:
   vmImage: 'windows-latest'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
+
 
 variables:
   solution: '**/*.sln'
