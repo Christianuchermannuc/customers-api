@@ -32,7 +32,7 @@ namespace Customers.API
                 options.AddDefaultPolicy(
                   builder =>
                   {
-                      builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+                      builder.WithOrigins("http://localhost:3000", "https://customer-client-cu.azurewebsites.net").AllowAnyMethod().AllowAnyHeader();
                   });
             });
 
