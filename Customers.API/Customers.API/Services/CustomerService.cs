@@ -14,7 +14,7 @@ namespace Customers.API.Services
     {
         public GenericRespons<Customer> AddCustomer(Customer customer)
         {
-            var newCustomer = new Customer(6, 1989, 100, new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName, 500990);
+            var newCustomer = new Customer(6,"Toro", new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName, 1989, 100, 500990);
 
             var respons = new GenericRespons<Customer>();
             respons.Status = 200;

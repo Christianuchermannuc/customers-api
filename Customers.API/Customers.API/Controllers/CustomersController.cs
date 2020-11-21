@@ -23,11 +23,11 @@ namespace Customers.API.Controllers
         public IActionResult Get()
         {
             var customerList = new List<Customer>();
-            customerList.Add(new Customer(1, 1980, 2, new CustomerType().GetCustomerTypeList().First(item => item.Id == 1).TypeName,12002002));
-            customerList.Add(new Customer(2, 1990, 20, new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName,43434343));
-            customerList.Add(new Customer(3, 2000, 9, new CustomerType().GetCustomerTypeList().First(item => item.Id == 1).TypeName,10000000));
-            customerList.Add(new Customer(4, 2005, 10, new CustomerType().GetCustomerTypeList().First(item => item.Id == 3).TypeName,4000000));
-            customerList.Add(new Customer(5, 1989, 100, new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName,5000));
+            customerList.Add(new Customer(1,"BKK", new CustomerType().GetCustomerTypeList().First(item => item.Id == 1).TypeName, 1980, 2,12002002));
+            customerList.Add(new Customer(2,"DNB", new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName, 1990, 20, 43434343));
+            customerList.Add(new Customer(3,"SPV", new CustomerType().GetCustomerTypeList().First(item => item.Id == 1).TypeName, 2000, 9 ,10000000));
+            customerList.Add(new Customer(4,"Test", new CustomerType().GetCustomerTypeList().First(item => item.Id == 3).TypeName, 2005, 10, 4000000));
+            customerList.Add(new Customer(5,"Test2", new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName, 1989, 100, 5000));
 
             return Ok(customerList);
         }
