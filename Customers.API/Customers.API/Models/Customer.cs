@@ -7,16 +7,22 @@ namespace Customers.API.Models
 {
     public class Customer
     {
-        public Customer(int id, int year, int numberOfOwners, string type)
+        public Customer()
+        {
+
+        }
+        public Customer(int id, int year, int numberOfOwners, string type, int shareCapital)
         {
             Id = id;
             Year = year;
             NumberOfOwners = numberOfOwners;
             Type = type;
+            ShareCapital = shareCapital;
         }
         public int Id { get; set; }
         public int Year { get; set; }
         public int NumberOfOwners { get; set; }
         public string Type { get; set; }
+        public int ShareCapital { get; set; }
     }
 }

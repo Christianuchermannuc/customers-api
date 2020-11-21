@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Customers.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,8 @@ namespace Customers.API
                       builder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
                   });
             });
+
+            services.AddTransient<ICustomerService, CustomerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
