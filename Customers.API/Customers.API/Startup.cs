@@ -38,6 +38,7 @@ namespace Customers.API
 
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+            services.AddSingleton<IEventLoggerService>(s => new EventLoggerService(Configuration["ServiceBus:squadxlservicebus"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -15,9 +15,11 @@ namespace Customers.API.Services
     public class CustomerService : ICustomerService
     {
         ICosmosDbService _cosmosDbService;
-        public CustomerService(ICosmosDbService cosmosDbService)
+        IEventLoggerService _eventLoggerService;
+        public CustomerService(ICosmosDbService cosmosDbService, IEventLoggerService eventLoggerService)
         {
             _cosmosDbService = cosmosDbService;
+            _eventLoggerService = eventLoggerService;
         }
         public async Task<GenericRespons<Customer>> AddCustomer(Customer customer)
         {
@@ -34,7 +36,8 @@ namespace Customers.API.Services
             }
 
             await _cosmosDbService.AddItemAsync(customer);
-            
+            await _eventLoggerService.LoggEvent(new CustomerEvent(customer.Id, "NewCustomer"));
+
             respons.Status = 200;
             respons.Payload = customer;
             return respons;
@@ -45,7 +48,7 @@ namespace Customers.API.Services
             var customersList = await _cosmosDbService.GetItemsAsync("SELECT * FROM c");
             var respons = new GenericRespons<IEnumerable<Customer>>();
             respons.Status = 200;
-            respons.Payload = customersList;
+            respons.Payload = customersList;       
             return respons;
         }
 
@@ -55,6 +58,7 @@ namespace Customers.API.Services
             var respons = new GenericRespons<string>();
             respons.Status = 200;
             respons.Payload = "Deleted";
+            await _eventLoggerService.LoggEvent(new CustomerEvent(id, "DeleteCustomer"));
             return respons;
         }
 
