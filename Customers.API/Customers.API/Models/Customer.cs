@@ -11,7 +11,7 @@ namespace Customers.API.Models
 
         public Customer()
         {
-
+            Id = Guid.NewGuid().ToString();
         }
         public Customer(string name, string type, int year, int numberOfOwners, int shareCapital)
         {

@@ -19,7 +19,7 @@ namespace Customers.API.Services
         Task<Customer> GetItemAsync(string id);
         Task AddItemAsync(Customer item);
         Task UpdateItemAsync(string id, Customer item);
-        Task DeleteItemAsync(string id);
+        Task<ItemResponse<Customer>> DeleteItemAsync(string id);
     }
 
     public class CosmosDbService : ICosmosDbService
@@ -39,9 +39,9 @@ namespace Customers.API.Services
             await this._container.CreateItemAsync<Customer>(item, new PartitionKey(item.Id));
         }
 
-        public async Task DeleteItemAsync(string id)
+        public async Task<ItemResponse<Customer>> DeleteItemAsync(string id)
         {
-            await this._container.DeleteItemAsync<Customer>(id, new PartitionKey(id));
+           return await this._container.DeleteItemAsync<Customer>(id, new PartitionKey(id));
         }
 
         public async Task<Customer> GetItemAsync(string id)

@@ -10,6 +10,7 @@ namespace Customers.API.Services
     {
         Task<GenericRespons<Customer>> AddCustomer(Customer customer);
         Task<GenericRespons<IEnumerable<Customer>>> GetCustomers();
+        Task<GenericRespons<string>> DeleteCustomer(string id);
     }
     public class CustomerService : ICustomerService
     {
@@ -20,13 +21,11 @@ namespace Customers.API.Services
         }
         public async Task<GenericRespons<Customer>> AddCustomer(Customer customer)
         {
-            var newCustomer = new Customer("Toro", new CustomerType().GetCustomerTypeList().First(item => item.Id == 2).TypeName, 1989, 100, 500990);
-
-            await _cosmosDbService.AddItemAsync(newCustomer);       
+            await _cosmosDbService.AddItemAsync(customer);       
 
             var respons = new GenericRespons<Customer>();
             respons.Status = 200;
-            respons.Payload = newCustomer;
+            respons.Payload = customer;
             return respons;
         }
 
@@ -36,6 +35,15 @@ namespace Customers.API.Services
             var respons = new GenericRespons<IEnumerable<Customer>>();
             respons.Status = 200;
             respons.Payload = customersList;
+            return respons;
+        }
+
+        public async Task<GenericRespons<string>> DeleteCustomer(string id)
+        {
+            var cosmosRespons = await _cosmosDbService.DeleteItemAsync(id);
+            var respons = new GenericRespons<string>();
+            respons.Status = 200;
+            respons.Payload = "Deleted";
             return respons;
         }
     }
