@@ -21,9 +21,20 @@ namespace Customers.API.Services
         }
         public async Task<GenericRespons<Customer>> AddCustomer(Customer customer)
         {
-            await _cosmosDbService.AddItemAsync(customer);       
-
             var respons = new GenericRespons<Customer>();
+
+            var validate = ValidateNewCustomer(customer);
+
+            if (!string.IsNullOrEmpty(validate))
+            {
+                respons.Status = 400;
+                respons.Payload = customer;
+                respons.ErrorDescription = validate;
+                return respons;
+            }
+
+            await _cosmosDbService.AddItemAsync(customer);
+            
             respons.Status = 200;
             respons.Payload = customer;
             return respons;
@@ -45,6 +56,73 @@ namespace Customers.API.Services
             respons.Status = 200;
             respons.Payload = "Deleted";
             return respons;
+        }
+
+        private string IsYearInFuture(Customer customer)
+        {
+           if(DateTime.Now.Year < customer.Year)
+            {
+                return "Year cant be in the future. ";
+            }
+
+            return "";
+        }
+
+        private string LimitedLiabilityCompanyRules(Customer customer)
+        {
+            var responeString = "";
+            if(customer.Type == "Limited liability company")
+            {
+                if (customer.ShareCapital < 30000)
+                {
+                    responeString = "Limited liability company should have minimum share capital 30000. ";
+                }
+                if (customer.NumberOfOwners < 1)
+                {
+                    responeString = responeString + "Limited liability company should have one or more owners. ";
+                }
+            }
+            return responeString;
+        }
+
+        private string SoleProprietorshipRules(Customer customer)
+        {
+            var responeString = "";
+            if (customer.Type == "Sole proprietorship")
+            {
+                
+                if (customer.NumberOfOwners != 1)
+                {
+                    responeString = "Sole proprietorship should have only one owner. ";
+                }
+            }
+            return responeString;
+        }
+
+        private string GeneralPartnershipRules(Customer customer)
+        {
+            var responeString = "";
+            if (customer.Type == "General partnership")
+            {
+
+                if (customer.NumberOfOwners < 2)
+                {
+                    responeString = "General partnership should have only two or more owners. ";
+                }
+            }
+            return responeString;
+        }
+
+        private string ValidateNewCustomer(Customer customer)
+        {
+            var responeString = "";
+            responeString += IsYearInFuture(customer);
+            responeString += LimitedLiabilityCompanyRules(customer);
+            responeString += SoleProprietorshipRules(customer);
+            responeString += GeneralPartnershipRules(customer);
+
+            return responeString;
+
         }
     }
 }

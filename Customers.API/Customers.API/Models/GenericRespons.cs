@@ -9,6 +9,6 @@ namespace Customers.API.Models
     {
         public T Payload { get; set; }
         public int Status { get; set; }
-        public int ErrorDescription { get; set; }
+        public string ErrorDescription { get; set; }
     }
 }

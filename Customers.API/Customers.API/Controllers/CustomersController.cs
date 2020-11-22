@@ -34,6 +34,10 @@ namespace Customers.API.Controllers
             {
                 return Ok(result.Payload);
             }
+            if (result.Status == 400)
+            {
+                return BadRequest(result.ErrorDescription);
+            }
             return BadRequest();
         }
 
