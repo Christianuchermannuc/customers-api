@@ -1,6 +1,7 @@
 ﻿using EventFunction;
 using EventFunction.Entities;
 using EventFunction.Models;
+using EventFunction.Repositories;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,33 +23,7 @@ namespace EventFunction
             builder.Services.AddDbContext<CustomerEventContext>(
                 options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, con));
 
-            builder.Services.AddTransient<IRepository, Repository>();
+            builder.Services.AddTransient<IEventRepository, EventRepository>();
         }
-    }
-
-    public interface IRepository
-    {
-        void SaveEvent(CustomerEvent ce);
-    }
-    public class Repository : IRepository
-    {
-        private readonly CustomerEventContext _customerEventContext;
-
-        public Repository(CustomerEventContext customerEventContext)
-        {
-            _customerEventContext = customerEventContext;
-        }
-
-        public void SaveEvent(CustomerEvent ce)
-        {
-            var newEvent = new CustomerEventEF();
-            newEvent.CustomerId = ce.Id;
-            newEvent.DateCreated = ce.DateCreated;
-            newEvent.RequestType = ce.RequestType;
-
-            _customerEventContext.CustomerEvents.Add(newEvent);
-            _customerEventContext.SaveChanges();
-           
-        }
-    }
+    }   
 }

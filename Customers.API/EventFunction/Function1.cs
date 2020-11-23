@@ -1,6 +1,7 @@
 using System;
 using EventFunction.Entities;
 using EventFunction.Models;
+using EventFunction.Repositories;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
@@ -10,11 +11,11 @@ namespace EventFunction
 {
     public  class Function1
     {
-        IRepository _repository;
+        IEventRepository _eventRepository;
         
-        public Function1(IRepository repository)
+        public Function1(IEventRepository eventRepository)
         {
-            _repository = repository;
+            _eventRepository = eventRepository;
         }
 
         [FunctionName("Function1")]
@@ -22,7 +23,7 @@ namespace EventFunction
         {
             log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
             var customerEvent = JsonConvert.DeserializeObject<CustomerEvent>(myQueueItem);
-           _repository.SaveEvent(customerEvent);
+            _eventRepository.SaveEvent(customerEvent);
 
         }
     }
